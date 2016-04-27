@@ -7,6 +7,7 @@ int main()
 {
     Baseball B;
     bool sim;
+    bool stats=false;
     int option = 0;
     while(option != 3)
     {
@@ -15,15 +16,35 @@ int main()
         {
         case 1:
             {
-                B.buildLineups();
                 sim = false;
+                B.buildLineups(sim);
                 B.scorecard(sim);
+                stats=true;
             }break;
         case 2:
             {
-                B.buildLineups();
                 sim = true;
-                B.scorecard(sim);
+                if(!stats)
+                {
+                    B.buildLineups(sim);
+                    B.scorecard(sim);
+                }
+                else
+                {
+                    string ans;
+                    cout<<"Use current lineup? (Y/N): ";
+                    cin>>ans;
+                    if(ans=="Y")
+                    {
+                        B.scorecard(sim);
+                    }
+                    else
+                    {
+                        B.buildLineups(sim);
+                        B.scorecard(sim);
+                    }
+                }
+                stats=true;
             }break;
         }
     }
