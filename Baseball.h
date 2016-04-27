@@ -31,9 +31,9 @@ class Baseball
         int mainMenu();
         void scorecard(bool sim);
         batter *halfInning(batter *current);
-        void buildLineups();
-        void teamA();
-        void teamB();
+        void buildLineups(bool sim);
+        void teamA(bool sim);
+        void teamB(bool sim);
         void inningAnnouncement(int inning, bool top);
         int keepScore(int score,batter*current, bool top, bool sim);
         void calcAvg(batter *player, double hit);
