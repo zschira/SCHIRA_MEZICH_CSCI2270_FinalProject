@@ -15,7 +15,12 @@ How to Run
 
 -if simulate game: 
 
+                       -> user will be prompted to create the lineups for both teams by entering the players numbers when prompted
+                       ->random batting averages will be assigned by generating a random number of hits between 20 and 60 for each player, and assuming 100 at bats (this allows for averages between .2 and .6)
+                       -> hits will be randomly generated based on the batters average, and the average will be updated after each at bat
                        -> full 9 inning game will be simulated and results displayed
+                       -> if score is tied at the end of the game game will continue simulating innings until one team wins
+                       -> after 1 game user can simulate another while keeping the same lineup (stats are updated and reused) or starting a new lineup
 
 -if start new scorecard: 
 
@@ -23,7 +28,7 @@ How to Run
                         
                        -> then user will be prompted to enter what each batter did in their atbat as they come up to bat
                        
-                       -> this will continue until 9 innings have been played and then final scores for each team will be displayed and averages for each player will be displayed
+                       -> this will continue until 9 innings (or one team wins in result of tie at end of 9 innings) have been played and then final scores for each team will be displayed and averages for each player will be displayed
                        
 Dependencies
 
@@ -41,9 +46,9 @@ Contributors
 none
 
 Open issues/bugs
-Averages are not calculating properly
-Simulation option not implemented yet
+FIXED Averages are not calculating properly
 
 Phase 2 collaboration recommendation
-fix averages
-check that at bat result input is only an int between 0 and 4
+implement option to simulate many games at once
+implement different output options (eg. score by inning, print stats...)
+check that at bat result input is only an int between 0 and 4/general robustness of code
