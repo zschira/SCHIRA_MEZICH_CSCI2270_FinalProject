@@ -6,9 +6,9 @@ using namespace std;
 
 struct batter
 {
-    int team;
     int number;
-    int avg;
+    int hits;
+    float avg;
     int slg;
     int obp;
     int rbi;
@@ -17,7 +17,10 @@ struct batter
     int b2;
     int b3;
     int b4;
-    bool inthehole = false;
+    int bt;
+    int atbats;
+    bool ondeck = false;
+    batter *previous;
     batter *next;
 };
 class Baseball
@@ -25,13 +28,22 @@ class Baseball
     public:
         Baseball();
         ~Baseball();
+        int mainMenu();
         void scorecard();
-    protected:
-    private:
+        batter *halfInning(batter *current);
+        void buildLineups();
         void teamA();
         void teamB();
-        batter *leadoffA;
-        batter *leadoffB;
+        void inningAnnouncement(int inning, bool top);
+        int keepScore(int score,batter*current, bool top);
+        void calcAvg(batter *player, int hit);
+        void calcOBP();
+        void calcSLG();
+    protected:
+    private:
+        batter *headA;
+        batter *headB;
+        batter *up;
 };
 
 #endif // BASEBALL_H
