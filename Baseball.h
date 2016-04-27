@@ -7,8 +7,8 @@ using namespace std;
 struct batter
 {
     int number;
-    int hits;
-    float avg;
+    double hits;
+    double avg;
     int slg;
     int obp;
     int rbi;
@@ -18,7 +18,7 @@ struct batter
     int b3;
     int b4;
     int bt;
-    int atbats;
+    double atbats;
     bool ondeck = false;
     batter *previous;
     batter *next;
@@ -29,14 +29,14 @@ class Baseball
         Baseball();
         ~Baseball();
         int mainMenu();
-        void scorecard();
+        void scorecard(bool sim);
         batter *halfInning(batter *current);
         void buildLineups();
         void teamA();
         void teamB();
         void inningAnnouncement(int inning, bool top);
-        int keepScore(int score,batter*current, bool top);
-        void calcAvg(batter *player, int hit);
+        int keepScore(int score,batter*current, bool top, bool sim);
+        void calcAvg(batter *player, double hit);
         void calcOBP();
         void calcSLG();
     protected:
@@ -44,6 +44,7 @@ class Baseball
         batter *headA;
         batter *headB;
         batter *up;
+        int bases[15];
 };
 
 #endif // BASEBALL_H
