@@ -3,6 +3,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 using namespace std;
 
 Baseball::Baseball()
@@ -26,10 +27,10 @@ int Baseball::mainMenu()
     return option;
 }
 
-void Baseball::buildLineups()
+void Baseball::buildLineups(bool sim)
 {
     cout << "New Score Card" << endl;
-    teamA();
+    teamA(sim);
     batter *tmpA = headA;
     cout << "Line up for team A:" << endl;
     int i = 1;
@@ -37,10 +38,10 @@ void Baseball::buildLineups()
     {
         tmpA = tmpA->next;
         cout << "Batter " << i << ": #";
-        cout << tmpA->number << " Average: " << tmpA->avg << endl;
+        cout << tmpA->number << " Average: " << tmpA->avg<<endl;
         i++;
     }
-    teamB();
+    teamB(sim);
     batter *tmpB = headB;
     cout << "Line up for team B:" << endl;
     int j = 1;
@@ -48,14 +49,13 @@ void Baseball::buildLineups()
     {
         tmpB = tmpB->next;
         cout << "Batter " << j << ": #";
-        cout << tmpB->number << " Average: " << tmpA->avg << endl;
+        cout << tmpB->number << " Average: " << tmpB->avg<< endl;
         j++;
     }
 }
 
-void Baseball::teamA()
+void Baseball::teamA(bool sim)
 {
-    //srand (static_cast <unsigned> (time(0)));
     int num = 0;
     headA = new batter;
     batter *current = headA;
@@ -80,20 +80,26 @@ void Baseball::teamA()
         }
         batter *tmp = new batter;
         tmp->number = num;
-        tmp->avg = 0;
-        tmp->atbats = 0;
-        //float avg = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-        //tmp->avg = avg/2;
-        tmp->hits = 0;
+        if(!sim)
+        {
+            tmp->avg=0;
+            tmp->hits = 0;
+            tmp->atbats = 0;
+        }
+        else
+        {
+            tmp->atbats=99;
+            tmp->hits=rand()%40+20;
+            calcAvg(tmp,0);
+        }
         current->next = tmp;
         current = tmp;
 
     }
 }
 
-void Baseball::teamB()
+void Baseball::teamB(bool sim)
 {
-    //srand (static_cast <unsigned> (time(0)));
     int num = 0;
     headB = new batter;
     batter *current = headB;
@@ -120,9 +126,18 @@ void Baseball::teamB()
         tmp->number = num;
         tmp->avg = 0;
         tmp->atbats = 0;
-        //float avg = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-        //tmp->avg = avg/2;
-        tmp->hits = 0;
+        if(!sim)
+        {
+            tmp->avg=0;
+            tmp->hits = 0;
+            tmp->atbats = 0;
+        }
+        else
+        {
+            tmp->atbats=99;
+            tmp->hits=rand()%40+20;
+            calcAvg(tmp,0);
+        }
         current->next = tmp;
         current = tmp;
     }
@@ -140,6 +155,25 @@ void Baseball::scorecard(bool sim)
     while(inning <= 9)
     {
         //team A at bat first
+        top = true;
+        inningAnnouncement(inning, top);
+        batter *currentA = leadoffA;
+        scoreA = keepScore(scoreA,currentA,top,sim);
+
+        //team B at bat second
+        if((scoreB>scoreA)&&(inning==9))
+        {
+            break;
+        }
+        top = false;
+        inningAnnouncement(inning, top);
+        batter *currentB = leadoffB;
+        scoreB = keepScore(scoreB,currentB, top,sim);
+
+        inning++;
+    }
+    while(scoreA==scoreB)
+    {
         top = true;
         inningAnnouncement(inning, top);
         batter *currentA = leadoffA;
@@ -176,7 +210,7 @@ void Baseball::scorecard(bool sim)
     {
         tmpB = tmpB->next;
         cout << "Batter " << j << ": #";
-        cout << tmpB->number << " Average: " << tmpA->avg << endl;
+        cout << tmpB->number << " Average: " << tmpB->avg<<endl;
         j++;
     }
 }
@@ -189,6 +223,10 @@ void Baseball::inningAnnouncement(int inning,bool top)
     {
         half = "Bottom";
         team = "B";
+    }
+    if((inning==10)&&(top))
+    {
+        cout<<"Extra innings!"<<endl;
     }
     cout << "Team " << team << " at bat" << endl;
     if(inning == 1)
@@ -234,7 +272,17 @@ int Baseball::keepScore(int score,batter *current, bool top, bool sim)
         }
         else
         {
-            atBat = rand()%5;
+            float ishit;
+            ishit=floor(static_cast <float> (rand()) / static_cast <float> (RAND_MAX)+current->avg);
+            if(ishit==0)
+            {
+                atBat=0;
+            }
+            else
+            {
+                atBat=1;
+            }
+            atBat=atBat*(rand()%4+1);
         }
         //int hit = 0;
 
@@ -326,6 +374,7 @@ int Baseball::keepScore(int score,batter *current, bool top, bool sim)
         }
         else if(atBat == 4)
         {
+            score++;
             cout << "Batter #" << current->number << " homered" << endl;
             if(third == 1)
             {
@@ -368,7 +417,7 @@ int Baseball::keepScore(int score,batter *current, bool top, bool sim)
 
 void Baseball::calcAvg(batter *player, double hit)
 {
-    player-> hits = player -> hits + hit;
+    player->hits = player->hits+ hit;
     player-> atbats = player->atbats + 1;
     player -> avg = (player->hits)/(player->atbats);
 }
