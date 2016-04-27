@@ -128,7 +128,7 @@ void Baseball::teamB()
     }
 }
 
-void Baseball::scorecard()
+void Baseball::scorecard(bool sim)
 {
     cout << "PLAY BALL!" << endl;
     bool top;
@@ -143,13 +143,13 @@ void Baseball::scorecard()
         top = true;
         inningAnnouncement(inning, top);
         batter *currentA = leadoffA;
-        scoreA = keepScore(scoreA,currentA,top);
+        scoreA = keepScore(scoreA,currentA,top,sim);
 
         //team B at bat second
         top = false;
         inningAnnouncement(inning, top);
         batter *currentB = leadoffB;
-        scoreB = keepScore(scoreB,currentB, top);
+        scoreB = keepScore(scoreB,currentB, top,sim);
 
         inning++;
     }
@@ -209,7 +209,7 @@ void Baseball::inningAnnouncement(int inning,bool top)
     }
 }
 
-int Baseball::keepScore(int score,batter *current, bool top)
+int Baseball::keepScore(int score,batter *current, bool top, bool sim)
 {
     int outs = 0;
     int first = 0;
@@ -218,20 +218,40 @@ int Baseball::keepScore(int score,batter *current, bool top)
     int atBat;
 
     cout << "Please enter the results of each at bat: " << endl;
-    int hit = 0;
+
     while(outs != 3)
     {
-        cout << "Batter #" << current->number << ":" << endl;
-        cout << "0: out" << endl;
-        cout << "1: single" << endl;
-        cout << "2: double" << endl;
-        cout << "3: triple" << endl;
-        cout << "4: home run" << endl;
-        cin >> atBat;
+        double hit = 0;
+        if(!sim)
+        {
+            cout << "Batter #" << current->number << ":" << endl;
+            cout << "0: out" << endl;
+            cout << "1: single" << endl;
+            cout << "2: double" << endl;
+            cout << "3: triple" << endl;
+            cout << "4: home run" << endl;
+            cin >> atBat;
+        }
+        else
+        {
+            atBat = rand()%5;
+        }
         //int hit = 0;
-        //atBat = rand()%5;
+
         //hit = current->avg+static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
         //atBat = atBat * (rand()%4 +1);
+        /*for(int i = 0; i < 9; i ++)
+        {
+            bases[i] = 0;
+        }
+        bases[9] = 1;
+        bases[10] = 1;
+        bases[11] = 1;
+        bases[12] = 2;
+        bases[13] = 3;
+        bases[14] = 4;
+        int index = rand%15;
+        atBat = bases[index];*/
         if(atBat != 0)
         {
             hit = 1;
@@ -346,7 +366,7 @@ int Baseball::keepScore(int score,batter *current, bool top)
     return score;
 }
 
-void Baseball::calcAvg(batter *player, int hit)
+void Baseball::calcAvg(batter *player, double hit)
 {
     player-> hits = player -> hits + hit;
     player-> atbats = player->atbats + 1;
