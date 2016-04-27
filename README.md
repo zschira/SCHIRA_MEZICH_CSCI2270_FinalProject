@@ -13,10 +13,12 @@ How to Run
 
 -it will prompt user to either start a manual scorecard or to simulate a game
 
--if simulate game -> full 9 inning game will be simulated and results displayed
+-if simulate game: 
+                      -> full 9 inning game will be simulated and results displayed
 
--if start new scorecard -> user will be prompted to create the lineups for both teams by entering the players numbers when prompted
-
+-if start new scorecard: 
+                      -> user will be prompted to create the lineups for both teams by entering the players numbers when prompted
+                        
                        -> then user will be prompted to enter what each batter did in their atbat as they come up to bat
                        
                        -> this will continue until 9 innings have been played and then final scores for each team will be displayed and averages for each player will be displayed
